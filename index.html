@@ -191,16 +191,16 @@
       transform: translate(-50%, -50%);
       z-index: 1;
     }
-    .heart::after {
-      content: "❤";
-      font-size: 40px;
-      color: #b69a7c;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 0;
-    }
+.heart::after {
+  content: "\2665"; /* այս տողը փոխի */
+  font-size: 40px;
+  color: #b69a7c;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
       .date-bar {
         display: flex;
         justify-content: center;
@@ -940,4 +940,5 @@
             </script>
             </body>
             </html>
+
 
