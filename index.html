@@ -6,7 +6,7 @@
   <link rel="dns-prefetch" href="https://script.google.com">
   <link rel="preconnect" href="https://script.google.com" crossorigin>
   <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
-  <title>Sergey & Lilit</title>
+  <title>Նկար ամբողջ էկրանով + տեքստ</title>
   <style>
     /* Ֆոնտերի միացում */
     @font-face {
@@ -94,7 +94,7 @@
     /* ՄՆԱՑ */
     .text-below {
       color: #3B3B28;
-      font-size: 48px;
+      font-size: 25px;
       font-family: 'Kamavor', sans-serif;
       text-align: center;
       margin-top: 30px;
@@ -124,11 +124,82 @@
     /* Սիրով սպասում ենք տեքստ */
     .invitation-message {
       color: #3B3B28;
-      font-family: 'Montserratarm-Medium',sans-serif;
+      font-family: 'Kamavor', sans-serif;
       font-size: 24px;
       text-align: center;
       margin: 40px 20px 50px;
+      letter-spacing: 2px;
       line-height: 1.5;
+    }
+    .invitation-sub{
+      text-align: center;
+      position: relative;
+      top: -35px; /* թվով խաղա, որքան մեծացնես՝ այնքան կբարձրանա */
+      font-family: 'Montserratarm-Medium', sans-serif;
+    }
+    .calendar {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      /* ԱՎԵԼԱՑՐՈՒ ԱՅՍ ՏՈՂԵՐԸ */
+      max-width: 350px; /* Կալենդարի առավելագույն լայնությունը */
+      margin: 20px auto; /* Կենտրոնացնել */
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 20px;
+    }
+    .calendar-header div {
+      font-size: 40px;
+      font-weight: bold;
+      color: #333;
+    }
+    .days, .dates {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0px;
+    }
+    .days div {
+      font-weight: bold;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 14px;
+      color: #666;
+    }
+    .dates div {
+      padding: 8px 4px;
+      font-size: 16px;
+      text-align: center;
+      color: #333;
+    }
+    .heart {
+      position: relative;
+      color: transparent;
+    }
+    .heart::before {
+      content: "5";
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    .heart::after {
+      content: "❤";
+      font-size: 40px;
+      color: #b69a7c;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
     }
       .date-bar {
         display: flex;
@@ -572,32 +643,29 @@
     <img src="couples1.png" alt="Նկար" id="main-image">
   </div>
 
-  <!-- ՄՆԱՑ -->
-  <div class="text-below">ՄՆԱՑ</div>
-
-  <!-- Քաունթդաուն -->
-  <div class="countdown" id="countdown">
-    <div class="time-part">
-      <div class="number" id="days">00</div>
-      <div class="label">օր</div>
-    </div>
-    <div class="time-part">
-      <div class="number" id="hours">00</div>
-      <div class="label">ժամ</div>
-    </div>
-    <div class="time-part">
-      <div class="number" id="minutes">00</div>
-      <div class="label">րոպե</div>
-    </div>
-    <div class="time-part">
-      <div class="number" id="seconds">00</div>
-      <div class="label">վրկ․</div>
-    </div>
-  </div>
+ 
 
   <!-- Հրավերի ուղերձ -->
   <div class="invitation-message">
-     Սպասում ենք Ձեզ՝ <br> նշելու մեր հարսանիքը։
+     Ուրախ  ենք հրավիրել Ձեզ՝ <br>  մեր հարսանիքին։
+  </div>
+  <p class="invitation-sub"> Ցանկանում ենք որ այդ օրը մեր կողքին <br> լինեն հարազատ և թանկագին մարդիկ</p>
+  <div class="calendar">
+    <div class="calendar-header">
+      <div>Հոկտեմբեր</div>
+      <div>2025</div>
+    </div>
+    <div class="days">
+      <div>Երկ</div><div>Երք</div><div>Չրք</div><div>Հնգ</div>
+      <div>Ուրբ</div><div>Շբթ</div><div>Կիր</div>
+    </div>
+    <div class="dates">
+      <div></div><div></div><div>1</div><div>2</div><div>3</div><div>4</div><div class="heart">5</div>
+      <div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div>
+      <div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div>
+      <div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div>
+      <div>27</div><div>28</div><div>29</div><div>30</div><div>31</div>
+    </div>
   </div>
     <div class="date-bar">
       <div class="side-block">
@@ -670,6 +738,34 @@
    </div>
   <!-- last image -->
   <img src="coupleslast.png" alt="Ներքևի նկար" class="last-image" />
+  <!-- ՄՆԱՑ -->
+  <div class="text-below">ՄԵՐ ՀԱՐՍԱՆԻՔԻՆ ՄՆԱՑԵԼ Է</div>
+
+  <!-- Քաունթդաուն -->
+  <div class="countdown" id="countdown">
+    <div class="time-part">
+      <div class="number" id="days">00</div>
+      <div class="label">օր</div>
+    </div>
+    <div class="time-part">
+      <div class="number" id="hours">00</div>
+      <div class="label">ժամ</div>
+    </div>
+    <div class="time-part">
+      <div class="number" id="minutes">00</div>
+      <div class="label">րոպե</div>
+    </div>
+    <div class="time-part">
+      <div class="number" id="seconds">00</div>
+      <div class="label">վրկ․</div>
+    </div>
+  </div>
+  <!-- Հայտարարություն -->
+  <div class="speech-caption">ԶԳՈՒՇԱՑՈՒՄ!</div>
+  <div class="speech-description">
+    Սիրելի՛ հյուրեր, հարսի պարի ընթացքում խնդրում ենք երեխաներին պահել ձեր կողքին, շնորհակալ ենք ըմբռնման համար։
+  </div>
+  
   <div class="speech-caption">ՍԻՐԵԼԻ  ԲԱՐԵԿԱՄ</div>
   <div class="speech-description">
     Մենք ցանկանում ենք քեզ հետ <br> կիսել  մեր կյանքի ամենակարևոր օրը
@@ -691,11 +787,7 @@
     <div class="confirmation-message error-message" id="errorMessage" style="display: none;"></div>
   </form>
 
-  <!-- Հայտարարություն -->
-  <div class="speech-caption">ԶԳՈՒՇԱՑՈՒՄ!</div>
-  <div class="speech-description">
-    Սիրելի՛ հյուրեր, հարսի պարի ընթացքում խնդրում ենք երեխաներին պահել ձեր կողքին, շնորհակալ ենք ըմբռնման համար։
-  </div>
+
 
   <script>
     // Երգի ավտոմատ նվագարկություն
@@ -847,5 +939,4 @@
             })();
             </script>
             </body>
-
             </html>
