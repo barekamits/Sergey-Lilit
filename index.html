@@ -924,6 +924,7 @@
     musicBtn.addEventListener("click", async () => {
       if (audio.paused) {
         try {
+          audio.currentTime = 5; // ← հենց էստեղ դնում ես քանի վայրկյանից սկսի
           await audio.play();
           musicBtn.classList.add("playing");
         } catch (e) {
@@ -934,6 +935,7 @@
         musicBtn.classList.remove("playing");
       }
     });
+
     // Քաունթդաուն
     const targetDate = new Date("2025-10-05T00:00:00").getTime();
 
