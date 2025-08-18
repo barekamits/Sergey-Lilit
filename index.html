@@ -607,11 +607,10 @@
 </head>
 <body>
   <!-- Ֆոնային երգ -->
-  <audio id="backgroundMusic" loop>
+  <audio id="backgroundMusic" loop preload="auto">
     <source src="sirohetq.mp3" type="audio/mpeg">
     <source src="wedding-music.ogg" type="audio/ogg">
   </audio>
-
   <!-- Երգի թաքնված ցուցիչ -->
   <div class="music-indicator" id="musicToggle" style="display: none;"></div>
 
@@ -770,53 +769,130 @@
   </form>
 
   <script>
-    // Երգի ավտոմատ նվագարկություն
+    // Երգի ավտոմատ նվագարկություն - Բարելավված տարբերակ
     document.addEventListener('DOMContentLoaded', function() {
       const audio = document.getElementById('backgroundMusic');
       const musicToggle = document.getElementById('musicToggle');
-      
-      // Նուրբ ձայնի մակարդակ (շատ ցածր)
+      let isPlaying = false;
+      let canPlay = false;
+
+      // Նուրբ ձայնի մակարդակ
       audio.volume = 0.15;
-      
-      // Փորձել ավտոմատ միացնել (բրաուզերները սահմանափակում ունեն)
-      const playMusic = () => {
-        audio.play().then(() => {
-          musicToggle.classList.add('playing');
-        }).catch(() => {
-          // Եթե ավտոմատ չի նվագարկվում, օգտատերը պետք է սեղմի
-          console.log('Ավտոմատ նվագարկումը արգելված է, պետք է օգտատերի ակտիվություն');
+
+      // Audio-ին preload="auto" ավելացրեք HTML-ում
+      audio.preload = "auto";
+
+      // Audio բեռնման events
+      audio.addEventListener('loadstart', function() {
+        console.log('Audio բեռնումը սկսվել է...');
+      });
+
+      audio.addEventListener('canplay', function() {
+        canPlay = true;
+        console.log('Audio պատրաստ է նվագարկման');
+        // Փորձել անմիջապես միացնել երբ պատրաստ է
+        attemptAutoplay();
+      });
+
+      audio.addEventListener('loadeddata', function() {
+        console.log('Audio տվյալները բեռնվել են');
+      });
+
+      // Ավտոմատ նվագարկման ֆունկցիա
+      const attemptAutoplay = async () => {
+        if (!canPlay || isPlaying) return false;
+
+        try {
+          await audio.play();
+          isPlaying = true;
+          musicToggle.style.display = 'block'; // Ցույց տալ toggle կոճակը
+          console.log('✓ Երաժշտությունը սկսվել է');
+          return true;
+        } catch (error) {
+          console.log('⚠ Ավտոմատ նվագարկումը արգելված է:', error.message);
+          return false;
+        }
+      };
+
+      // Օգտատիրոջ գործողության հետ միացնել
+      const enableMusicOnInteraction = async (event) => {
+        console.log('Օգտատիրոջ գործողություն հայտնաբերված:', event.type);
+
+        if (!isPlaying && canPlay) {
+          const success = await attemptAutoplay();
+          if (success) {
+            // Հաջող նվագարկման դեպքում հեռացնել listeners-ները
+            removeInteractionListeners();
+          }
+        }
+      };
+
+      // Interaction listeners ավելացնել
+      const addInteractionListeners = () => {
+        const events = ['click', 'scroll', 'touchstart', 'keydown', 'mousemove'];
+        events.forEach(eventType => {
+          document.addEventListener(eventType, enableMusicOnInteraction, { once: true, passive: true });
         });
       };
 
-      // Փորձել անմիջապես միացնել
-      playMusic();
-
-      // Եթե օգտատերը ինչ-որ գործողություն կատարի (scroll, click), ապա միացնել
-      const enableMusic = () => {
-        if (audio.paused) {
-          playMusic();
-        }
-        // Հեռացնել listener-ները, որ մեկ անգամ միայն գործարկվի
-        document.removeEventListener('click', enableMusic);
-        document.removeEventListener('scroll', enableMusic);
-        document.removeEventListener('touchstart', enableMusic);
+      // Interaction listeners հեռացնել
+      const removeInteractionListeners = () => {
+        const events = ['click', 'scroll', 'touchstart', 'keydown', 'mousemove'];
+        events.forEach(eventType => {
+          document.removeEventListener(eventType, enableMusicOnInteraction);
+        });
       };
 
-      document.addEventListener('click', enableMusic, { once: true });
-      document.addEventListener('scroll', enableMusic, { once: true });
-      document.addEventListener('touchstart', enableMusic, { once: true });
+      // Ավելացնել interaction listeners
+      addInteractionListeners();
 
-      // Երգի toggle կոճակ
-      musicToggle.addEventListener('click', function() {
-        if (audio.paused) {
-          audio.play().then(() => {
-            musicToggle.classList.add('playing');
-          });
-        } else {
+      // Manual toggle կոճակ
+      if (musicToggle) {
+        musicToggle.addEventListener('click', async function(e) {
+          e.stopPropagation();
+
+          if (!canPlay) {
+            console.log('Audio դեռ բեռնվում է...');
+            return;
+          }
+
+          try {
+            if (isPlaying) {
+              audio.pause();
+              isPlaying = false;
+              console.log('🔇 Երաժշտությունը դադարեցված է');
+            } else {
+              await audio.play();
+              isPlaying = true;
+              console.log('🔊 Երաժշտությունը միացված է');
+            }
+          } catch (error) {
+            console.error('Audio նվագարկման սխալ:', error);
+          }
+        });
+      }
+
+      // Audio սխալների մշակում
+      audio.addEventListener('error', function(e) {
+        console.error('Audio ֆայլի սխալ:', e);
+        console.log('Ստուգեք՝ sirohetq.mp3 ֆայլը գոյություն ունի՞ և մատչելի է:');
+      });
+
+      // Page visibility API - էջը թաքնելիս կառավարում
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden && isPlaying) {
           audio.pause();
-          musicToggle.classList.remove('playing');
+          console.log('⏸ Էջը թաքնված է - երաժշտությունը դադարեցված');
+        } else if (!document.hidden && isPlaying && audio.paused) {
+          audio.play();
+          console.log('▶ Էջը տեսանելի է - երաժշտությունը շարունակված');
         }
       });
+
+      // Debugging information
+      console.log('🎵 Audio initialization complete');
+      console.log('Audio file:', audio.src || audio.currentSrc);
+      console.log('Preload setting:', audio.preload);
     });
 
     // Քաունթդաուն
