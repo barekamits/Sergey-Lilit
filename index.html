@@ -728,30 +728,39 @@
         font-size: 16px;
       }
     }
+    .music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(59,59,40,0.9);
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: 0.3s;
+      z-index: 1000;
+    }
+
+    .music-btn.playing {
+      background: #b69a7c;
+    }
+
   </style>
 </head>
 <body>
-  <!-- ՆՈՐ - Երگի համարակալման popup -->
-  <div class="music-welcome" id="musicWelcome">
-    <div class="music-welcome-content">
-      <h3>🎵 Երաժշտություն</h3>
-      <p>Ցանկանու՞մ եք լսել հարսանեկան երգ մեր հրավիրատոմսի ընթացքում:</p>
-      <button onclick="enableMusic(true)">Այո, միացնել</button>
-      <button class="secondary" onclick="enableMusic(false)">Ոչ</button>
-    </div>
-  </div>
+  <!-- Երաժշտության կոճակ -->
+  <!-- Երաժշտության կոճակ -->
+  <button class="music-btn" id="musicBtn" title="Երաժշտություն">🎵</button>
 
-  <!-- ՆՈՐ - Երգի կառավարման կոճակ -->
-  <button class="music-control" id="musicControl" style="display: none;" title="Երաժշտություն">
-    🎵
-  </button>
-
-  <!-- Ֆոնային երգ -->
+  <!-- Երաժշտության ֆայլ -->
   <audio id="backgroundMusic" loop preload="auto">
     <source src="sirohetq.mp3" type="audio/mpeg">
     <source src="wedding-music.ogg" type="audio/ogg">
   </audio>
-
   <!-- Նկարը և վերին տեքստերը -->
   <div class="image-wrapper">
     <img src="couples1.png" alt="Նկար" id="main-image">
@@ -907,132 +916,24 @@
   </form>
 
   <script>
-    // Երգի ավտոմատ նվագարկություն - Բարելավված տարբերակ
-    document.addEventListener('DOMContentLoaded', function() {
-      const audio = document.getElementById('backgroundMusic');
-      const musicToggle = document.getElementById('musicToggle');
-      let isPlaying = false;
-      let canPlay = false;
+    const musicBtn = document.getElementById("musicBtn");
+    const audio = document.getElementById("backgroundMusic");
 
-      // Նուրբ ձայնի մակարդակ
-      audio.volume = 0.15;
+    audio.volume = 0.15; // ձայնի մակարդակ
 
-      // Audio-ին preload="auto" ավելացրեք HTML-ում
-      audio.preload = "auto";
-
-      // Audio բեռնման events
-      audio.addEventListener('loadstart', function() {
-        console.log('Audio բեռնումը սկսվել է...');
-      });
-
-      audio.addEventListener('canplay', function() {
-        canPlay = true;
-        console.log('Audio պատրաստ է նվագարկման');
-        // Փորձել անմիջապես միացնել երբ պատրաստ է
-        attemptAutoplay();
-      });
-
-      audio.addEventListener('loadeddata', function() {
-        console.log('Audio տվյալները բեռնվել են');
-      });
-
-      // Ավտոմատ նվագարկման ֆունկցիա
-      const attemptAutoplay = async () => {
-        if (!canPlay || isPlaying) return false;
-
+    musicBtn.addEventListener("click", async () => {
+      if (audio.paused) {
         try {
           await audio.play();
-          isPlaying = true;
-          musicToggle.style.display = 'block'; // Ցույց տալ toggle կոճակը
-          console.log('✓ Երաժշտությունը սկսվել է');
-          return true;
-        } catch (error) {
-          console.log('⚠ Ավտոմատ նվագարկումը արգելված է:', error.message);
-          return false;
+          musicBtn.classList.add("playing");
+        } catch (e) {
+          console.log("Play error:", e);
         }
-      };
-
-      // Օգտատիրոջ գործողության հետ միացնել
-      const enableMusicOnInteraction = async (event) => {
-        console.log('Օգտատիրոջ գործողություն հայտնաբերված:', event.type);
-
-        if (!isPlaying && canPlay) {
-          const success = await attemptAutoplay();
-          if (success) {
-            // Հաջող նվագարկման դեպքում հեռացնել listeners-ները
-            removeInteractionListeners();
-          }
-        }
-      };
-
-      // Interaction listeners ավելացնել
-      const addInteractionListeners = () => {
-        const events = ['click', 'scroll', 'touchstart', 'keydown', 'mousemove'];
-        events.forEach(eventType => {
-          document.addEventListener(eventType, enableMusicOnInteraction, { once: true, passive: true });
-        });
-      };
-
-      // Interaction listeners հեռացնել
-      const removeInteractionListeners = () => {
-        const events = ['click', 'scroll', 'touchstart', 'keydown', 'mousemove'];
-        events.forEach(eventType => {
-          document.removeEventListener(eventType, enableMusicOnInteraction);
-        });
-      };
-
-      // Ավելացնել interaction listeners
-      addInteractionListeners();
-
-      // Manual toggle կոճակ
-      if (musicToggle) {
-        musicToggle.addEventListener('click', async function(e) {
-          e.stopPropagation();
-
-          if (!canPlay) {
-            console.log('Audio դեռ բեռնվում է...');
-            return;
-          }
-
-          try {
-            if (isPlaying) {
-              audio.pause();
-              isPlaying = false;
-              console.log('🔇 Երաժշտությունը դադարեցված է');
-            } else {
-              await audio.play();
-              isPlaying = true;
-              console.log('🔊 Երաժշտությունը միացված է');
-            }
-          } catch (error) {
-            console.error('Audio նվագարկման սխալ:', error);
-          }
-        });
+      } else {
+        audio.pause();
+        musicBtn.classList.remove("playing");
       }
-
-      // Audio սխալների մշակում
-      audio.addEventListener('error', function(e) {
-        console.error('Audio ֆայլի սխալ:', e);
-        console.log('Ստուգեք՝ sirohetq.mp3 ֆայլը գոյություն ունի՞ և մատչելի է:');
-      });
-
-      // Page visibility API - էջը թաքնելիս կառավարում
-      document.addEventListener('visibilitychange', function() {
-        if (document.hidden && isPlaying) {
-          audio.pause();
-          console.log('⏸ Էջը թաքնված է - երաժշտությունը դադարեցված');
-        } else if (!document.hidden && isPlaying && audio.paused) {
-          audio.play();
-          console.log('▶ Էջը տեսանելի է - երաժշտությունը շարունակված');
-        }
-      });
-
-      // Debugging information
-      console.log('🎵 Audio initialization complete');
-      console.log('Audio file:', audio.src || audio.currentSrc);
-      console.log('Preload setting:', audio.preload);
     });
-
     // Քաունթդաուն
     const targetDate = new Date("2025-10-05T00:00:00").getTime();
 
@@ -1131,7 +1032,9 @@
               else FORM.dispatchEvent(new Event('submit', { bubbles:true, cancelable:true }));
             };
             })();
+
+
             </script>
+
             </body>
             </html>
-
