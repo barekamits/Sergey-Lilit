@@ -607,10 +607,9 @@
 </head>
 <body>
   <!-- Ֆոնային երգ -->
-  <audio id="backgroundMusic" loop preload="auto">
-    <source src="sirohetq.mp3" type="audio/mpeg">
-    <source src="wedding-music.ogg" type="audio/ogg">
-  </audio>
+<audio id="backgroundMusic" loop autoplay muted playsinline preload="auto">
+  <source src="sirohetq.mp3" type="audio/mpeg">
+</audio>
   <!-- Երգի թաքնված ցուցիչ -->
   <div class="music-indicator" id="musicToggle" style="display: none;"></div>
 
@@ -770,11 +769,24 @@
 
   <script>
     // Երգի ավտոմատ նվագարկություն - Բարելավված տարբերակ
-    document.addEventListener('DOMContentLoaded', function() {
-      const audio = document.getElementById('backgroundMusic');
-      const musicToggle = document.getElementById('musicToggle');
-      let isPlaying = false;
-      let canPlay = false;
+document.addEventListener('DOMContentLoaded', function() {
+  const audio = document.getElementById('backgroundMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  let isPlaying = true;   // արդեն autoplay-ի մեջ ա
+  
+  // առաջին user interaction-ի ժամանակ անջատում ենք mute
+  const enableSound = () => {
+    if (audio.muted) {
+      audio.muted = false;
+      audio.play();
+    }
+    document.removeEventListener('click', enableSound);
+    document.removeEventListener('touchstart', enableSound);
+  };
+
+  document.addEventListener('click', enableSound, { once: true });
+  document.addEventListener('touchstart', enableSound, { once: true });
+});
 
       // Նուրբ ձայնի մակարդակ
       audio.volume = 0.15;
@@ -996,5 +1008,6 @@
             </script>
             </body>
             </html>
+
 
 
