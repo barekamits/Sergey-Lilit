@@ -53,11 +53,113 @@
       --large-spacing: 60px;
     }
 
-    /* Երգի թաքնված ցուցիչ */
-    .music-indicator {
-      display: none;
+    /* ՆՈՐ - Երգի կոճակի ստիլ */
+    .music-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(59, 59, 40, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
+    .music-control:hover {
+      background: rgba(59, 59, 40, 1);
+      transform: scale(1.1);
+    }
+
+    .music-control.playing {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59, 59, 40, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(59, 59, 40, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 59, 40, 0); }
+    }
+
+    /* ՆՈՐ - Առաջին բացման popup */
+    .music-welcome {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .music-welcome.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .music-welcome-content {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 350px;
+      margin: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .music-welcome h3 {
+      font-family: 'Kamavor', sans-serif;
+      font-size: 24px;
+      color: #3B3B28;
+      margin-bottom: 15px;
+    }
+
+    .music-welcome p {
+      font-family: 'Montserratarm-Medium', sans-serif;
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 25px;
+      line-height: 1.4;
+    }
+
+    .music-welcome button {
+      font-family: 'Montserratarm-Medium', sans-serif;
+      font-size: 18px;
+      color: white;
+      background: #3B3B28;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 0 10px;
+      transition: all 0.3s ease;
+    }
+
+    .music-welcome button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .music-welcome button.secondary {
+      background: #888;
+    }
+
+    /* Մնացած ստիլները... */
     body {
       background-color: #D9D9D9;
       margin: 0;
@@ -603,16 +705,52 @@
       font-size: 16px;
       line-height: 1.4;
     }
+
+    /* Մոբայլ ադապտացիա */
+    @media (max-width: 768px) {
+      .music-control {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+      }
+
+      .countdown {
+        gap: 20px;
+      }
+
+      .time-part .number {
+        font-size: 32px;
+      }
+
+      .time-part .label {
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- ՆՈՐ - Երگի համարակալման popup -->
+  <div class="music-welcome" id="musicWelcome">
+    <div class="music-welcome-content">
+      <h3>🎵 Երաժշտություն</h3>
+      <p>Ցանկանու՞մ եք լսել հարսանեկան երգ մեր հրավիրատոմսի ընթացքում:</p>
+      <button onclick="enableMusic(true)">Այո, միացնել</button>
+      <button class="secondary" onclick="enableMusic(false)">Ոչ</button>
+    </div>
+  </div>
+
+  <!-- ՆՈՐ - Երգի կառավարման կոճակ -->
+  <button class="music-control" id="musicControl" style="display: none;" title="Երաժշտություն">
+    🎵
+  </button>
+
   <!-- Ֆոնային երգ -->
   <audio id="backgroundMusic" loop preload="auto">
     <source src="sirohetq.mp3" type="audio/mpeg">
     <source src="wedding-music.ogg" type="audio/ogg">
   </audio>
-  <!-- Երգի թաքնված ցուցիչ -->
-  <div class="music-indicator" id="musicToggle" style="display: none;"></div>
 
   <!-- Նկարը և վերին տեքստերը -->
   <div class="image-wrapper">
