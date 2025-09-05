@@ -751,106 +751,17 @@
     }
     
     /* Կոնտեյներ լուսանկարների համար */
-
-/* Փոխարինեք polaroid-container-ի CSS-ը սրանով */
-
-.polaroid-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* height: 150vh; <- հանել այս տողը */
-  gap: 40px;
-  padding: var(--section-spacing) 20px; /* Ավելացնել padding նորմալ տարածության համար */
-  margin: var(--section-spacing) 0; /* Կամ margin օգտագործել */
-}
-
-/* Այլապես կարող եք նաև ավելի բարակ տարածություն դնել */
-.polaroid-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  padding: 30px 20px; /* Ֆիքսված padding */
-  margin: 30px 0; /* Ֆիքսված margin */
-}
-
-/* Նկարները մոտ բերելու համար - փոքր gap */
-.polaroid-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Շատ մոտ */
-  padding: 20px;
-}
-
-/* Կամ միջին տարածություն */
-.polaroid-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px; /* Միջին */
-  padding: 20px;
-}
-
-/* Հետաքրքիր polaroid էֆեկտներ */
-.polaroid-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: -30px; /* Overlap */
-  padding: 40px 20px;
-}
-
-.polaroid {
-  position: relative;
-  background: white;
-  padding: 15px 15px 50px 15px;
-  width: 280px;
-  border-radius: 8px; /* Ավելի կլոր անկյուններ */
-  box-shadow: 
-    0 8px 16px rgba(0,0,0,0.15), 
-    0 2px 4px rgba(0,0,0,0.1); /* Երկշերտ ստվեր */
-  transform: rotate(-8deg);
-  transition: all 0.3s ease;
-  border: 2px solid #f5f5f5; /* Նուրբ border */
-}
-
-.polaroid:nth-child(1) {
-  transform: rotate(-8deg) translateY(-10px); /* Մի քիչ վերև */
-  z-index: 1;
-}
-
-.polaroid:nth-child(2) {
-  transform: rotate(12deg) translateY(5px); /* Ավելի մեծ թեքում */
-  z-index: 2;
-}
-
-/* Hover էֆեկտ */
-.polaroid:hover {
-  transform: scale(1.05) rotate(0deg); /* Ուղղվում է hover-ի ժամանակ */
-  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-  z-index: 10;
-}
-
-.polaroid img {
-  width: 100%;
-  display: block;
-  height: auto;
-  border-radius: 4px;
-  filter: sepia(10%) contrast(1.1); /* Vintage էֆեկտ */
-}
-
-/* Polaroid տեքստ ներքևում */
-.polaroid::after {
-  content: "♡";
-  position: absolute;
-  bottom: 15px;
-  right: 20px;
-  color: #999;
-  font-size: 18px;
-  transform: rotate(15deg);
-}
-
+ .image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+    }
 
   </style>
 </head>
@@ -914,7 +825,7 @@
           Պսակադրությունը տեղի կունենա <br> Սբ․ Երրորդություն եկեղեցում
         </div>
         <div class="church-time">
-          Ժամը 14։00
+          Ժամը 13։30
         </div>
     <a href="https://maps.app.goo.gl/VgBimMkpJQ5VByGh8" target="_blank" class="how-to-reach">ԻՆՉՊԵՍ ՀԱՍՆԵԼ</a>
   </div>
@@ -965,17 +876,12 @@
          </div>
    </div>
 
-  <div class="polaroid-container">
-    <div class="polaroid">
-      <img src="s-lcombf.png" alt="Photo 1">
-      
-    </div>
 
-    <div class="polaroid">
-      <img src="s-lcombs.png" alt="Photo 2">
+<div class="image-container">
+    <img src="s-lcombf.png" alt="Photo 1">
+    <img src="s-lcombs.png" alt="Photo 2">
+</div>
     
-    </div>
-  </div>
 
   
   <!-- ՄՆԱՑ -->
