@@ -728,6 +728,18 @@
         font-size: 16px;
       }
     }
+   .last-images {
+  display: flex;
+  flex-direction: column; /* իրար տակ */
+  align-items: center;
+  gap: 0;
+  font-size: 0; /* 👈 էս է կարևորը, հանում է inline spacing */
+}
+
+.last-image {
+  display: block;
+  margin: 0;
+}
   </style>
 </head>
 <body>
@@ -853,9 +865,12 @@
          </div>
    </div>
 
-  <!-- last image -->
-  <img src="coupleslast.png" alt="Ներքևի նկար" class="last-image" />
-  
+<!-- last images -->
+<div class="last-images">
+  <img src="s-lcombf.png" alt="Ներքևի նկար 1" class="last-image" />
+  <img src="s-lcombs.png" alt="Ներքևի նկար 2" class="last-image" />
+</div>
+
   <!-- ՄՆԱՑ -->
   <div class="text-below">ՄԵՐ ՀԱՐՍԱՆԻՔԻՆ ՄՆԱՑԵԼ Է</div>
 
@@ -1134,4 +1149,3 @@
             </script>
             </body>
             </html>
-
